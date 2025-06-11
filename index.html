@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Joyeux annivresaire</title>
+    <link rel="stylesheet" href="styles.css" type="text/css" />
+  </head>
+  <body>
+    <div class="hero" id="textSection">
+      <h1>Coucou Fabien, J'ai une surprise pour toi !!! 🌊🏡</h1>
+      <p></p>
+      <button onclick="revealImage()" class="reveal-btn">Clique ici 🎁</button>
+    </div>
+    <div class="image-container" id="imageSection">
+      <img
+        src="\img\maison_plage4.png"
+        alt="Chalet anniversaire avec invités sur terrasse"
+      />
+    </div>
+
+    <div class="wishes-section" id="wisheSection">
+      <h2 class="section-title">Message privé</h2>
+
+      <div class="wishes-grid" id="wishesGrid">
+        <div class="wish-card">
+          <div class="wish-avatar">K</div>
+          <div class="wish-author">Kibam</div>
+          <div class="wish-text">
+            <div> Salut Fabien🎉 </div>
+            Tu as su trouver une place précieuse dans nos cœurs. 
+            Tu es une personne d’une grande valeur.
+            Béni soit ce jour qui t’a vu naître.
+            C'est un privilège de t'avoir pour frère, ami, disciple ❤️‍🔥
+          </div>
+        </div>
+
+    </div>
+
+    <!-- Nouvelle section carrousel -->
+    <div class="carousel-section" id="carouselSection" style="display: none">
+      <h2 class="carousel-title">Gallerie de reconnaissance ❤️‍🔥💫🌟</h2>
+
+      <div class="carousel-container">
+        <div class="carousel-wrapper" id="carouselWrapper">
+          <div class="carousel-slide">
+            <img src="img/tonton.png" alt="Le tonton de plusieurs" />
+            <div class="carousel-caption">
+              <h3>Le tonton de plusieurs</h3>
+              <p>Et ils ne peuvent s'empêcher de t'aimer</p>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="img/the-driver.jpg" alt="The driver" />
+            <div class="carousel-caption">
+              <h3>Notre Chef logistique!!</h3>
+              <p>Déménageur/transporteur/dépanneur à l'occasion</p>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img
+              src="img/Petits-travaux-de-bricolage.jpg"
+              alt="L'architecte d'intérieur"
+            />
+            <div class="carousel-caption">
+              <h3>L'architecte d'intérieur</h3>
+              <p>Toujours disponible pour conseiller ou aider !!</p>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img
+              src="img/un-frere.jpg"
+              alt="Un amoureux du Seigneur et un frère"
+            />
+            <div class="carousel-caption">
+              <h3>Mais surtout</h3>
+              <p>Un amoureux du Seigneur et un disciple hyper engagé😆 !!!</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="carousel-nav carousel-prev" onclick="previousSlide()">
+          ❮
+        </button>
+        <button class="carousel-nav carousel-next" onclick="nextSlide()">
+          ❯
+        </button>
+      </div>
+
+      <div class="carousel-indicators" id="carouselIndicators">
+        <span
+          class="carousel-indicator active"
+          onclick="currentSlide(1)"
+        ></span>
+        <span class="carousel-indicator" onclick="currentSlide(2)"></span>
+        <span class="carousel-indicator" onclick="currentSlide(3)"></span>
+        <span class="carousel-indicator" onclick="currentSlide(4)"></span>
+      </div>
+    </div>
+
+    <script>
+      // Variables globales
+      let currentSlideIndex = 0;
+      const totalSlides = 4;
+
+      function revealImage() {
+        const imgSection = document.getElementById("imageSection");
+        const textSection = document.getElementById("textSection");
+        const wishesSection = document.getElementById("wisheSection");
+        const carouselSection = document.getElementById("carouselSection");
+        textSection.style.display = "none";
+        imgSection.style.display = "flex";
+        wishesSection.style.display = "grid";
+        carouselSection.style.display = "block";
+        createConfetti();
+
+        setTimeout(() => {
+          imgSection.classList.add("reveal");
+        }, 30);
+
+        initCarousel();
+      }
+      // Variables
+      const addWishBtn = document.getElementById("addWishBtn");
+      const wishModal = document.getElementById("wishModal");
+      const wishForm = document.getElementById("wishForm");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const wishesGrid = document.getElementById("wishesGrid");
+
+      // Fonction pour créer des confettis
+      function createConfetti() {
+        const colors = ["#ff6b6b", "#feca57", "#48cae4", "#ff9ff3", "#54a0ff"];
+
+        for (let i = 0; i < 50; i++) {
+          setTimeout(() => {
+            const confetti = document.createElement("div");
+            confetti.style.position = "fixed";
+            confetti.style.left = Math.random() * 100 + "vw";
+            confetti.style.top = "-10px";
+            confetti.style.width = "10px";
+            confetti.style.height = "10px";
+            confetti.style.backgroundColor =
+              colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.transform = "rotate(" + Math.random() * 360 + "deg)";
+            confetti.style.zIndex = "9999";
+            confetti.style.borderRadius = "2px";
+
+            document.body.appendChild(confetti);
+
+            const animation = confetti.animate(
+              [
+                { transform: "translateY(0) rotate(0deg)", opacity: 1 },
+                { transform: "translateY(100vh) rotate(720deg)", opacity: 0 },
+              ],
+              {
+                duration: 3000 + Math.random() * 2000,
+                easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+              }
+            );
+
+            animation.onfinish = () => confetti.remove();
+          }, i * 50);
+        }
+      }
+
+      // Fonctions du carrousel
+      function showSlide(index) {
+        const wrapper = document.getElementById("carouselWrapper");
+        const indicators = document.querySelectorAll(".carousel-indicator");
+
+        currentSlideIndex = index;
+        wrapper.style.transform = `translateX(-${index * 100}%)`;
+
+        indicators.forEach((indicator, i) => {
+          indicator.classList.toggle("active", i === index);
+        });
+      }
+
+      function nextSlide() {
+        const nextIndex = (currentSlideIndex + 1) % totalSlides;
+        showSlide(nextIndex);
+      }
+
+      function previousSlide() {
+        const prevIndex = (currentSlideIndex - 1 + totalSlides) % totalSlides;
+        showSlide(prevIndex);
+      }
+
+      function currentSlide(index) {
+        showSlide(index - 1);
+      }
+
+      // Auto-play du carrousel
+      let autoPlayInterval;
+
+      function startAutoPlay() {
+        autoPlayInterval = setInterval(nextSlide, 5000);
+      }
+
+      function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+      }
+
+      // Démarrer l'auto-play quand le carrousel devient visible
+      function initCarousel() {
+        startAutoPlay();
+
+        // Pause l'auto-play quand on survole le carrousel
+        const carouselContainer = document.querySelector(".carousel-container");
+        carouselContainer.addEventListener("mouseenter", stopAutoPlay);
+        carouselContainer.addEventListener("mouseleave", startAutoPlay);
+      }
+
+      // Modal pour ajouter un vœu
+      addWishBtn.addEventListener("click", () => {
+        wishModal.style.display = "block";
+      });
+
+      cancelBtn.addEventListener("click", () => {
+        wishModal.style.display = "none";
+        wishForm.reset();
+      });
+
+      // Fermer la modal en cliquant à l'extérieur
+      wishModal.addEventListener("click", (e) => {
+        if (e.target === wishModal) {
+          wishModal.style.display = "none";
+          wishForm.reset();
+        }
+      });
+
+      // Soumettre un nouveau vœu
+      wishForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("authorName").value.trim();
+        const message = document.getElementById("wishMessage").value.trim();
+
+        if (name && message) {
+          addWishCard(name, message);
+          wishModal.style.display = "none";
+          wishForm.reset();
+        }
+      });
+
+      // Ajouter une nouvelle carte de vœu
+      function addWishCard(name, message) {
+        const wishCard = document.createElement("div");
+        wishCard.className = "wish-card";
+        wishCard.style.opacity = "0";
+        wishCard.style.transform = "translateY(20px)";
+
+        const initial = name.charAt(0).toUpperCase();
+        const avatarColors = [
+          "linear-gradient(45deg, #667eea, #764ba2)",
+          "linear-gradient(45deg, #f093fb, #f5576c)",
+          "linear-gradient(45deg, #4facfe, #00f2fe)",
+          "linear-gradient(45deg, #43e97b, #38f9d7)",
+          "linear-gradient(45deg, #fa709a, #fee140)",
+        ];
+        const randomColor =
+          avatarColors[Math.floor(Math.random() * avatarColors.length)];
+
+        wishCard.innerHTML = `
+                <div class="wish-avatar" style="background: ${randomColor}">${initial}</div>
+                <div class="wish-author">${name}</div>
+                <div class="wish-text">${message}</div>
+            `;
+
+        wishesGrid.appendChild(wishCard);
+
+        // Animation d'apparition
+        setTimeout(() => {
+          wishCard.style.transition = "all 0.5s ease";
+          wishCard.style.opacity = "1";
+          wishCard.style.transform = "translateY(0)";
+        }, 100);
+      }
+
+      // Animation des éléments flottants
+      const floatingElements = document.querySelectorAll(".floating-element");
+      floatingElements.forEach((element, index) => {
+        element.style.animationDelay = index * 0.5 + "s";
+      });
+
+      // Navigation au clavier pour le carrousel
+      document.addEventListener("keydown", (e) => {
+        if (
+          document.getElementById("carouselSection").style.display !== "none"
+        ) {
+          if (e.key === "ArrowLeft") {
+            previousSlide();
+          } else if (e.key === "ArrowRight") {
+            nextSlide();
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
